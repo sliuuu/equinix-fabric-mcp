@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "equinix-fabric": {
+      "command": "npx",
+      "args": ["-y", "equinix-fabric-mcp"],
+      "env": {
+        "EQUINIX_API_TOKEN": "YOUR_API_TOKEN_HERE"
+      }
+    }
+  }
+}
