@@ -332,6 +332,5 @@ If you find this project useful, please consider giving it a star on GitHub!
 
 **Version**: 2.1.0  
 **Last Updated**: October 18, 2025  
-**Author**: Sam - With assistance from Claude
 
 **Language**: Python 3.10+
