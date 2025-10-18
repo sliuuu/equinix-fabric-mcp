@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "equinix-fabric-mcp"
+version = "2.1.0"
+description = "Model Context Protocol server for Equinix Fabric API"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Sam Liu", email = "sam@example.com"}
+]
+keywords = ["mcp", "equinix", "fabric", "networking", "api", "claude"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "mcp>=0.9.0",
+    "httpx>=0.24.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "black>=23.0.0",
+    "mypy>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/sliuuu/equinix-fabric-mcp"
+Documentation = "https://github.com/sliuuu/equinix-fabric-mcp#readme"
+Repository = "https://github.com/sliuuu/equinix-fabric-mcp"
+Issues = "https://github.com/sliuuu/equinix-fabric-mcp/issues"
+
+[project.scripts]
+equinix-fabric-mcp = "server:main"
+
+[tool.setuptools]
+py-modules = ["server"]
+
+[tool.black]
+line-length = 100
+target-version = ['py310']
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
