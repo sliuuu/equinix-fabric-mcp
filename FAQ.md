@@ -1,0 +1,259 @@
+# Frequently Asked Questions (FAQ)
+
+## General Questions
+
+### What is the Equinix Fabric MCP Server?
+
+It's a Model Context Protocol (MCP) server that enables AI assistants like Claude to interact with the Equinix Fabric API. This allows you to manage network infrastructure using natural language.
+
+### Do I need programming knowledge to use this?
+
+No! That's the beauty of MCP. You can manage your Equinix Fabric infrastructure by simply talking to Claude in natural language.
+
+### Is this an official Equinix product?
+
+No, this is a community-built tool that uses the official Equinix Fabric API. It's open source and maintained by the community.
+
+### Is it free to use?
+
+Yes, the MCP server itself is free and open source (MIT License). However, you'll pay normal Equinix Fabric fees for any resources you create or use.
+
+## Setup & Installation
+
+### What are the system requirements?
+
+- Node.js 18.x or higher
+- Claude Desktop application
+- Equinix account with Fabric API access
+- macOS, Windows, or Linux
+
+### Where do I get an API token?
+
+1. Log in to [Equinix Fabric Portal](https://fabric.equinix.com)
+2. Go to User Settings → API
+3. Generate a new token
+4. Copy and save it securely
+
+### The server isn't loading in Claude Desktop. What should I check?
+
+1. Verify your `claude_desktop_config.json` syntax is valid
+2. Check that Node.js is installed: `node --version`
+3. Verify the package is installed: `npm list -g equinix-fabric-mcp`
+4. Check Claude Desktop logs for errors
+5. Restart Claude Desktop after config changes
+
+### Can I use this with other AI assistants?
+
+Currently, this is designed for Claude Desktop which supports MCP. As other AI assistants add MCP support, they should be able to use this server too.
+
+## API & Permissions
+
+### What API permissions do I need?
+
+You need an Equinix API token with permissions to:
+- Read Fabric resources (ports, connections, routers)
+- Create/modify/delete connections
+- Create/modify/delete routers
+- Access service profiles
+
+### Are there API rate limits?
+
+Yes, Equinix Fabric API has rate limits. The MCP server will return errors if you hit these limits. Wait a moment and try again.
+
+### Can I use multiple API tokens?
+
+You can only configure one token per MCP server instance. If you need to manage multiple accounts, you can configure multiple MCP server instances with different names.
+
+### Is my API token secure?
+
+Your token is stored in your local Claude Desktop config file. Never commit this file to version control or share it publicly. Always use environment variables in shared environments.
+
+## Usage Questions
+
+### What can I do with this tool?
+
+You can:
+- List and view all Fabric resources
+- Create connections between ports or to cloud providers
+- Manage Cloud Routers
+- Monitor bandwidth usage
+- Search and filter resources
+- Create service tokens
+- And much more!
+
+### How do I create a connection to AWS?
+
+1. List your ports: "List my Fabric ports"
+2. Find AWS service profile: "Show me AWS service profiles"
+3. Ask Claude: "Create a connection from my Singapore port to AWS Direct Connect"
+4. Follow Claude's guidance
+
+### Can I automate tasks?
+
+Yes! You can ask Claude to perform complex workflows. For example: "Create redundant connections from Singapore to Hong Kong with 1 Gbps bandwidth each"
+
+### How do I check my bandwidth usage?
+
+"Show me bandwidth statistics for all my connections" or "What's the bandwidth usage on connection [UUID]?"
+
+## Troubleshooting
+
+### I'm getting "401 Unauthorized" errors
+
+Your API token is invalid or expired. Generate a new token from the Equinix Fabric Portal.
+
+### I'm getting "403 Forbidden" errors
+
+Your account doesn't have the necessary permissions. Contact Equinix support to enable Fabric API access.
+
+### I'm getting "404 Not Found" errors
+
+The resource UUID you're trying to access doesn't exist or you don't have access to it. Double-check the UUID.
+
+### Connections are failing to create
+
+Check:
+- Both endpoints are available
+- VLANs aren't already in use
+- Bandwidth is available
+- Metro locations are correct
+- You have sufficient permissions
+
+### How do I view logs?
+
+Claude Desktop logs:
+- macOS: `~/Library/Logs/Claude/`
+- Windows: `%APPDATA%\Claude\logs\`
+
+## Features & Capabilities
+
+### What Fabric resources can I manage?
+
+- ✅ Ports (list, view)
+- ✅ Connections (full CRUD + stats)
+- ✅ Cloud Routers (full CRUD)
+- ✅ Service Profiles (list, view)
+- ✅ Service Tokens (full CRUD)
+- ✅ Metro Locations (list)
+- ⏳ Route Filters (planned)
+- ⏳ Network Stats (planned)
+
+### Can I create redundant connections?
+
+Yes! You can create connection pairs with redundancy configuration. See [Connection Examples](examples/connection-examples.md) for details.
+
+### Can I connect to multiple cloud providers?
+
+Absolutely! Use Cloud Routers to connect to AWS, Azure, GCP, Oracle Cloud, IBM Cloud, and more simultaneously.
+
+### Does it support BGP configuration?
+
+The MCP server manages Cloud Routers which support BGP. However, detailed BGP configuration is done through the Equinix Portal or API directly.
+
+### Can I monitor connection health?
+
+You can view connection statistics and status. For detailed monitoring, use Equinix's monitoring tools or integrate with your existing monitoring stack.
+
+## Cost & Billing
+
+### Does this cost extra?
+
+No, the MCP server is free. You only pay standard Equinix Fabric fees for the resources you provision.
+
+### Will I be charged for API calls?
+
+No, Equinix Fabric API calls are free. You're only charged for active resources (ports, connections, routers).
+
+### How can I estimate costs?
+
+Ask Claude: "What would it cost to create a 1 Gbps connection from Singapore to AWS?" Claude can help you understand Equinix pricing, but always verify in the Equinix Portal.
+
+### Can I set spending limits?
+
+Spending limits are managed through your Equinix account, not through this MCP server.
+
+## Development & Contributing
+
+### How can I contribute?
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines. Contributions are welcome!
+
+### Can I add support for new API endpoints?
+
+Yes! Check the [Equinix Fabric API docs](https://developer.equinix.com/docs/fabric-v4), add the tool definition and handler, and submit a PR.
+
+### Where should I report bugs?
+
+[GitHub Issues](https://github.com/sliuuu/equinix-fabric-mcp/issues)
+
+### Can I fork this for my own needs?
+
+Yes! It's MIT licensed, so you can fork, modify, and use it as needed.
+
+## Security
+
+### Is my data secure?
+
+Your API token is stored locally on your machine. API calls go directly from your machine to Equinix's API servers. No data passes through any third-party servers.
+
+### Should I rotate my API tokens?
+
+Yes, as a security best practice, rotate your tokens regularly (e.g., every 90 days).
+
+### What if my token is compromised?
+
+1. Immediately revoke it in the Equinix Portal
+2. Generate a new token
+3. Update your Claude Desktop config
+4. Review recent activity for any unauthorized changes
+
+### Can I use this in a CI/CD pipeline?
+
+While possible, this tool is designed for interactive use with Claude. For automation, consider using the Equinix Fabric API directly or their official SDKs.
+
+## Advanced Usage
+
+### Can I manage multiple Equinix accounts?
+
+Yes, configure multiple MCP server instances with different tokens:
+
+```json
+{
+  "mcpServers": {
+    "equinix-prod": {
+      "command": "npx",
+      "args": ["-y", "equinix-fabric-mcp"],
+      "env": {
+        "EQUINIX_API_TOKEN": "prod-token"
+      }
+    },
+    "equinix-dev": {
+      "command": "npx",
+      "args": ["-y", "equinix-fabric-mcp"],
+      "env": {
+        "EQUINIX_API_TOKEN": "dev-token"
+      }
+    }
+  }
+}
+```
+
+### Can I use this with the n8n MCP server?
+
+Yes! You can configure multiple MCP servers simultaneously. For example, use n8n MCP for workflow automation and Equinix Fabric MCP for network management.
+
+### How do I update to the latest version?
+
+```bash
+npm update -g equinix-fabric-mcp
+```
+
+Then restart Claude Desktop.
+
+## Still Have Questions?
+
+- 📖 [Full Documentation](README.md)
+- 🚀 [Quickstart Guide](QUICKSTART.md)
+- 💬 [GitHub Discussions](https://github.com/sliuuu/equinix-fabric-mcp/discussions)
+- 🐛 [Report an Issue](https://github.com/sliuuu/equinix-fabric-mcp/issues)
+- 🌐 [Equinix Support](https://support.equinix.com)
