@@ -1,4 +1,4 @@
-# Equinix Fabric MCP Server v2.1
+# Unoffical Equinix Fabric MCP Server v2.1
 
 **Python implementation** - A Model Context Protocol (MCP) server that provides AI assistants with tools to interact with the Equinix Fabric API. This enables AI-powered management of network connections, ports, routers, and service profiles.
 
@@ -332,5 +332,5 @@ If you find this project useful, please consider giving it a star on GitHub!
 
 **Version**: 2.1.0  
 **Last Updated**: October 18, 2025  
-**Author**: Sam Liu  
+**Author**: Sam Liu - With assistance from Claude
 **Language**: Python 3.10+
