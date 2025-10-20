@@ -169,11 +169,11 @@ The server provides **22 MCP tools**:
 13. `validate_connection_config` - Pre-validate configs
 
 ### Cloud Router Management (3 tools) ⚠️ **READ-ONLY**
-14. ~~`create_fabric_router`~~ - **Not supported in Fabric v4 API**
-15. ~~`update_fabric_router`~~ - **Not supported in Fabric v4 API**
-16. ~~`delete_fabric_router`~~ - **Not supported in Fabric v4 API**
+14. ~~`create_fabric_router`~~ - **Not supported in the current Fabric MCP server**
+15. ~~`update_fabric_router`~~ - **Not supported in the current Fabric MCP server**
+16. ~~`delete_fabric_router`~~ - **Not supported in the current Fabric MCP server**
 
-> **⚠️ Important**: Cloud Router create/update/delete operations are not available in Fabric v4 API. You can only LIST and GET existing routers. Cloud Routers must be managed through the Equinix Portal or alternative methods.
+> **⚠️ Important**: Cloud Router create/update/delete operations are not available in the current Fabric MCP server. You can only LIST and GET existing routers. Cloud Routers must be managed through the Equinix Portal or alternative methods.
 
 ### Service Profiles (2 tools)
 17. `list_service_profiles` - Browse cloud providers
