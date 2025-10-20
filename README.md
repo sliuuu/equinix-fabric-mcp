@@ -1,4 +1,12 @@
-# Unoffical Equinix Fabric MCP Server v2.1
+# Unoffical Equinix Fabric MCP Server v2.2
+
+![Version](https://img.shields.io/badge/version-2.2.0-blue)
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![API](https://img.shields.io/badge/Fabric%20API-v4-green)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-stable-success)
+
+⚠️ **Important**: v2.2 has breaking changes. See [Migration Guide](MIGRATION.md) and [API Limitations](API_LIMITATIONS.md).
 
 **Python implementation** - A Model Context Protocol (MCP) server that provides AI assistants with tools to interact with the Equinix Fabric API. This enables AI-powered management of network connections, ports, routers, and service profiles.
 
@@ -14,16 +22,13 @@
 - **Create new virtual connections** between endpoints
 - **Update existing connections** (bandwidth, name, description)
 - **Delete connections**
-- Get connection statistics (bandwidth, traffic)
 - Search connections by filters
 - Validate connection configurations before creation
 
-### Cloud Router Management
-- List all Fabric Cloud Routers
-- Get detailed router information
-- **Create new Cloud Routers** with BGP support
-- **Update router configurations**
-- **Delete routers**
+### Cloud Router Management (Read-Only)
+- List all Fabric Cloud Routers via search
+- Get detailed router information via search
+- ⚠️ **Note**: Create/Update/Delete operations are not supported in Fabric v4 API
 
 ### Service Profiles & Tokens
 - List available service profiles (cloud providers and partners)
@@ -119,16 +124,16 @@ Once configured, you can ask Claude to help with Equinix Fabric tasks:
 "List all my Fabric ports"
 "Show me details about port [UUID]"
 "List all my connections"
-"What's the bandwidth usage on connection [UUID]?"
 "Show me available service profiles for AWS"
 "List all metros in Asia"
+"List all my Cloud Routers"
+"Get details for router [UUID]"
 ```
 
 ### Write Operations
 ```
 "Create a connection between my Singapore port and AWS Direct Connect"
 "Update connection [UUID] to 1000 Mbps bandwidth"
-"Create a Cloud Router in London with PRO package"
 "Delete connection [UUID]"
 "Create a service token for my Hong Kong port"
 ```
@@ -158,9 +163,9 @@ The server provides **21 MCP tools**:
 2. `get_fabric_port` - Get port details
 3. `list_fabric_connections` - List connections
 4. `get_fabric_connection` - Get connection details
-5. `get_connection_stats` - View bandwidth statistics
-6. `list_fabric_routers` - List Cloud Routers
-7. `get_fabric_router` - Get router details
+5. ~~`get_connection_stats`~~ - **Deprecated** (not available in Fabric v4)
+6. `list_fabric_routers` - List Cloud Routers via search
+7. `get_fabric_router` - Get router details via search
 8. `search_connections` - Search with filters
 9. `list_metros` - List metro locations
 
@@ -170,10 +175,10 @@ The server provides **21 MCP tools**:
 12. `delete_connection` - Remove connections
 13. `validate_connection_config` - Pre-validate configs
 
-### Cloud Router Management (3 tools)
-14. `create_fabric_router` - Deploy new routers
-15. `update_fabric_router` - Modify routers
-16. `delete_fabric_router` - Remove routers
+### Cloud Router Management (3 tools - **Not Supported in v4**)
+14. ~~`create_fabric_router`~~ - **Not available in Fabric v4 API**
+15. ~~`update_fabric_router`~~ - **Not available in Fabric v4 API**
+16. ~~`delete_fabric_router`~~ - **Not available in Fabric v4 API**
 
 ### Service Profiles (2 tools)
 17. `list_service_profiles` - Browse cloud providers
@@ -190,12 +195,15 @@ This MCP server implements the Equinix Fabric API v4:
 
 - **Ports**: GET /fabric/v4/ports
 - **Connections**: GET, POST, PATCH, DELETE /fabric/v4/connections
-- **Cloud Routers**: GET, POST, PATCH, DELETE /fabric/v4/cloudRouters
+- **Cloud Routers**: POST /fabric/v4/routers/search *(read-only)*
 - **Service Profiles**: GET /fabric/v4/serviceProfiles
 - **Service Tokens**: GET, POST, DELETE /fabric/v4/serviceTokens
 - **Metros**: GET /fabric/v4/metros
-- **Statistics**: GET /fabric/v4/connections/{id}/stats
 - **Search**: POST /fabric/v4/connections/search
+
+### ⚠️ Deprecated/Unsupported Endpoints
+- ~~GET /fabric/v4/connections/{id}/stats~~ - Not available in Fabric v4
+- ~~POST/PATCH/DELETE /fabric/v4/cloudRouters~~ - Not available in Fabric v4
 
 ## 🔍 Development
 
@@ -230,22 +238,31 @@ mypy server.py
 pytest
 ```
 
-## 🆚 Version 2.1 Updates
+## 🆚 Version 2.2 Updates
 
-### New in v2.1
-- ✅ **OAuth2 authentication** (more secure than API keys)
-- ✅ **Token caching** (improved performance)
-- ✅ **Python 3.10+ support**
-- ✅ **Async/await throughout**
-- ✅ **Better error handling**
-- ✅ **Comprehensive tool schemas**
+### New in v2.2
+- ✅ **Cloud Router read operations** now use search endpoint (Fabric v4 compliant)
+- ✅ **Improved error handling** for unsupported operations
+- ✅ **Deprecated endpoints removed** (connection stats, router write operations)
+- ✅ **Better API compliance** with Fabric v4 specifications
+- ✅ **Clear error messages** for unsupported features
+
+### Breaking Changes from v2.1
+- ⚠️ `get_connection_stats` is deprecated (endpoint not available in Fabric v4)
+- ⚠️ Cloud Router create/update/delete operations not supported (use Fabric Portal)
+- ✅ Cloud Router read operations (list/get) still work via search API
+
+### Migrating from v2.1
+- Remove any automation that calls `get_connection_stats`
+- Use `get_fabric_connection` for connection state/metadata instead
+- Cloud Router management must be done through Fabric Portal or Terraform
+- All other functionality remains unchanged
 
 ### Migrating from v1.x
 - Authentication changed from Bearer token to OAuth2
 - Environment variables changed:
   - Old: `EQUINIX_API_TOKEN`
   - New: `EQUINIX_CLIENT_ID` + `EQUINIX_CLIENT_SECRET`
-- All functionality preserved and enhanced
 
 ## 🔒 Security
 
@@ -293,6 +310,12 @@ export EQUINIX_CLIENT_SECRET=$(op read "op://Private/Equinix/client_secret")
 - Ensure bandwidth is available in the metro
 - Validate metro codes match service requirements
 
+### Deprecated Feature Errors
+
+- **Connection Stats**: Use `get_fabric_connection` for state/metadata
+- **Cloud Router Write Operations**: Use Equinix Fabric Portal or Terraform
+- **NotImplementedError**: Feature not available in Fabric v4 API
+
 ## 📖 Documentation
 
 - [Quickstart Guide](QUICKSTART.md) - Get started in 5 minutes
@@ -330,7 +353,6 @@ If you find this project useful, please consider giving it a star on GitHub!
 
 ---
 
-**Version**: 2.1.0  
-**Last Updated**: October 18, 2025  
-
+**Version**: 2.2.0  
+**Last Updated**: October 20, 2025  
 **Language**: Python 3.10+
