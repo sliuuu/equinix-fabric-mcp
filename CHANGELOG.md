@@ -5,6 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2025-10-20
+
+### Fixed
+- **CRITICAL**: Corrected documentation to reflect actual Fabric v4 API capabilities
+- Marked Cloud Router create/update/delete operations as unsupported (read-only in v4)
+- Deprecated `get_connection_stats` tool (endpoint not available in Fabric v4 API)
+- Updated tool count from 21 to 22 (accurate count)
+- Added `get_service_token` tool to Service Tokens section
+
+### Added
+- Clear "Known API Limitations" section in README
+- NotImplementedError exceptions for unsupported operations with helpful messages
+- API Limitation Errors troubleshooting section
+- Workarounds for deprecated/unsupported features
+- Version 2.2 updates section highlighting changes
+
+### Changed
+- Cloud Router operations now use search endpoints (GET only)
+- Connection statistics replaced with connection metadata retrieval
+- Updated usage examples to reflect working features only
+- Enhanced error messages for better user experience
+- Improved troubleshooting documentation
+
+### Documentation
+- README updated with accurate feature descriptions
+- Strikethrough formatting for deprecated/unsupported features
+- Warning callouts for API limitations
+- Clear separation of working vs non-working features
+- Updated version and last modified date
+
 ## [2.1.0] - 2025-10-18
 
 ### Changed
@@ -87,19 +117,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Planned for v2.2
+### Planned
 - Automated testing suite
-- Route filter management
-- Network operations support
-- Enhanced usage statistics
+- Enhanced usage statistics and metrics
 - Performance monitoring tools
 - Batch operations support
 
 ### Under Consideration
-- GraphQL support
 - Connection templates
 - Cost optimization recommendations
-- Automated failover management
 - Integration with other MCP servers
 - Connection health monitoring
 - Performance analytics dashboard
@@ -109,7 +135,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Migration Guide
 
-### From v1.0 (TypeScript) to v2.1 (Python)
+### From v2.1 to v2.2
+
+#### No Breaking Changes
+Version 2.2 is a **documentation update only** - no code changes required.
+
+#### What Changed
+- Documentation now accurately reflects Fabric v4 API limitations
+- Cloud Router CRUD operations marked as unsupported (API limitation)
+- Connection statistics marked as deprecated (API limitation)
+- Better error messages when attempting unsupported operations
+
+#### Action Required
+- **None** - Your existing configuration continues to work
+- Review Known API Limitations section in README
+- Update any scripts that use unsupported features
+
+#### Deprecated Features
+- ❌ `get_connection_stats` - Use `get_fabric_connection` instead
+- ❌ `create_fabric_router` - Use Equinix Portal instead
+- ❌ `update_fabric_router` - Use Equinix Portal instead
+- ❌ `delete_fabric_router` - Use Equinix Portal instead
+
+### From v1.0 (TypeScript) to v2.1+ (Python)
 
 #### Prerequisites
 1. **Python 3.10+** instead of Node.js 18+
@@ -122,7 +170,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 npm install -g equinix-fabric-mcp
 ```
 
-**New (v2.1)**:
+**New (v2.1+)**:
 ```bash
 pip install equinix-fabric-mcp
 ```
@@ -144,7 +192,7 @@ pip install equinix-fabric-mcp
 }
 ```
 
-**New Claude Desktop config (v2.1)**:
+**New Claude Desktop config (v2.1+)**:
 ```json
 {
   "mcpServers": {
@@ -169,10 +217,10 @@ pip install equinix-fabric-mcp
 
 #### What Stays the Same
 
-- All 21 MCP tools work identically
-- Tool names and parameters unchanged
+- Core MCP tools work identically
+- Tool names and parameters unchanged (working features)
 - API endpoints remain the same
-- Functionality is preserved
+- Functionality is preserved (for supported features)
 - Documentation structure maintained
 
 #### Benefits of Migration
@@ -183,13 +231,19 @@ pip install equinix-fabric-mcp
 - ✅ Native Python async/await
 - ✅ Improved error handling
 - ✅ Type safety with Python type hints
+- ✅ Accurate documentation of API limitations
 
 ## Version History
 
-- **2.1.0** - Python rewrite with OAuth2 (Current)
+- **2.2.0** - Documentation accuracy update (Current)
+- **2.1.0** - Python rewrite with OAuth2
 - **1.0.0** - Initial TypeScript release
 
 ## Breaking Changes Summary
+
+### v2.2.0
+- **Documentation only** - no code breaking changes
+- Clarified unsupported features (were never working in v2.1)
 
 ### v2.1.0
 - Language changed from TypeScript to Python
@@ -197,7 +251,37 @@ pip install equinix-fabric-mcp
 - Installation method changed from npm to pip
 - Configuration format updated for Python
 
+## Known Issues & Limitations
+
+### Fabric v4 API Limitations (v2.2+)
+These are **API limitations**, not bugs in the MCP server:
+
+1. **Connection Statistics**
+   - Endpoint `/fabric/v4/connections/{id}/stats` not available
+   - **Workaround**: Use `get_fabric_connection` for metadata
+
+2. **Cloud Router CRUD**
+   - POST/PATCH/DELETE operations not available in v4 API
+   - **Workaround**: Manage through Equinix Portal
+   - **Still works**: List and Get router information
+
+3. **Route Filters**
+   - Not yet exposed in Fabric v4 API
+   - Planned for future API updates
+
+### Reporting Issues
+
+If you encounter an issue:
+1. Check if it's a known API limitation (above)
+2. Verify your OAuth2 credentials are valid
+3. Check Claude Desktop logs for details
+4. Open a GitHub issue with reproduction steps
+
 ## Security
+
+### v2.2.0 Security Notes
+- No security changes (documentation update only)
+- All v2.1.0 security features remain
 
 ### v2.1.0 Security Enhancements
 - OAuth2 Client Credentials flow (more secure than static tokens)
@@ -217,6 +301,6 @@ For security issues, please create a private security advisory on GitHub.
 
 ---
 
-**Changelog Version**: 2.1.0  
-**Last Updated**: October 18, 2025  
+**Changelog Version**: 2.2.0  
+**Last Updated**: October 20, 2025  
 **Migration Support**: See migration guide above or open an issue
