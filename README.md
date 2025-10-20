@@ -21,7 +21,7 @@
 ### Cloud Router Management
 - List all Fabric Cloud Routers
 - Get detailed router information
-- ⚠️ **Note**: Create/Update/Delete operations are not supported in Fabric v4 API
+- ⚠️ **Note**: Create/Update/Delete operations are not supported in the current Fabric MCP server
 
 ### Service Profiles & Tokens
 - List available service profiles (cloud providers and partners)
@@ -199,7 +199,7 @@ This MCP server implements the Equinix Fabric API v4:
 
 ### Known API Limitations
 
-- ❌ **Connection Statistics**: `/fabric/v4/connections/{id}/stats` endpoint not available in v4
+- ❌ **Connection Statistics**: `/fabric/v4/connections/{id}/stats` endpoint not available in v4 
 - ❌ **Cloud Router CRUD**: POST/PATCH/DELETE operations not available in v4 API
 - ✅ **Workaround**: Use `get_fabric_connection` for connection metadata
 - ✅ **Workaround**: Manage Cloud Routers through Equinix Portal
