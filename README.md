@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/sliuuu-equinix-fabric-mcp-badge.png)](https://mseep.ai/app/sliuuu-equinix-fabric-mcp)
+
 # Unofficial Equinix Fabric MCP Server v2.2
 
 **Python implementation** - A Model Context Protocol (MCP) server that provides AI assistants with tools to interact with the Equinix Fabric API. This enables AI-powered management of network connections, ports, routers, and service profiles.
